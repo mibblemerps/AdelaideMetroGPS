@@ -106,6 +106,12 @@ class Parser
         return $stops;
     }
 
+    /**
+     * Parse trips.txt
+     *
+     * @param array|string $csv Either pre-parsed CSV file or a path to a CSV file.
+     * @return array Array of trips.
+     */
     public static function parseTrips($csv)
     {
         if (is_string($csv)) {

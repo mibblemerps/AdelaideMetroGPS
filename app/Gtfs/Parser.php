@@ -95,10 +95,10 @@ class Parser
             $stop->long = self::doubleOrNull($row[5]);
             $stop->zoneId = self::intOrNull($row[6]);
             $stop->stopUrl = self::strOrNull($row[7]);
-            $stop->isStation = ($row[8] == 1);
+            $stop->isStation = ($row[8] == null) ? null : boolval($row[8]);
             $stop->parentStation = self::intOrNull($row[9]);
             $stop->stopTimezone = $row[10];
-            $stop->wheelchairAccessible = ($row[11] == 0) ? null : boolval($row[11]);
+            $stop->wheelchairAccessible = ($row[11] == null) ? null : boolval($row[11]);
 
             $stops[$stop->id] = $stop;
         }

@@ -105,4 +105,30 @@ class Parser
 
         return $stops;
     }
+
+    public static function parseTrips($csv)
+    {
+        if (is_string($csv)) {
+            $csv = self::parseCsv($csv);
+        }
+
+        $trips = [];
+        foreach ($csv as $row)
+        {
+            $trip = new Trip();
+            $trip->routeId = intval($row[0]);
+            $trip->serviceId = intval($row[1]);
+            $trip->id = intval($row[2]);
+            $trip->headsign = self::strOrNull($row[3]);
+            $trip->shortName = self::strOrNull($row[4]);
+            $trip->outbound = ($row[5] == null) ? null : boolval($row[5]);
+            $trip->blockId = self::intOrNull($row[6]);
+            $trip->shapeId = self::intOrNull($row[7]);
+            $trip->wheelchairAccessible = ($row[8] == null) ? null : boolval($row[8]);
+
+            $trips[$trip->id] = $trip;
+        }
+
+        return $trips;
+    }
 }

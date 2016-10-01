@@ -1,0 +1,25 @@
+Adelaide Metro GTFS Release Notes
+
+The following is a list of changes and upcoming events:
+
+
+Upcoming Public Holidays:
+
+Labour Day - October 3 
+
+
+Special Events:
+
+1) Royal Adelaide Show - September 2 - 11.
+2) City to Bay - September 18
+
+
+General Amendments:
+
+
+1) Improved shape data near Reynella Interchange.
+
+2) Improved shape data near Elizabeth Interchange.
+
+3) Added Stop 65A Frobisher Rd - South side, affecting routes 440, 441, 442, 443, 451 and 452.
+

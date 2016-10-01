@@ -137,4 +137,34 @@ class Parser
 
         return $trips;
     }
+
+    public static function parseShapes($csv, $setMemoryLimit = '768M')
+    {
+        // This method needs alot of memory.
+        if ($setMemoryLimit !== null) { ini_set('memory_limit', $setMemoryLimit); }
+
+        if (is_string($csv)) {
+            $csv = self::parseCsv($csv);
+        }
+
+        $shapes = [];
+        foreach ($csv as $row) {
+            $shapePoint = new ShapePoint(
+                intval($row[0]),
+                intval($row[3]),
+                doubleval($row[1]),
+                doubleval($row[2]),
+                doubleval($row[4])
+            );
+
+            if (!array_has($shapes, $shapePoint->shapeId)) {
+                $newShape = new Shape();
+                $newShape->id = $shapePoint->shapeId;
+                $shapes[$shapePoint->shapeId] = $newShape;
+            }
+            $shapes[$shapePoint->shapeId]->points[] = $shapePoint;
+        }
+
+        return $shapes;
+    }
 }

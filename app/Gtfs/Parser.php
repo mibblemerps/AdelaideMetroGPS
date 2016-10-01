@@ -138,6 +138,13 @@ class Parser
         return $trips;
     }
 
+    /**
+     * Parse shapes.txt
+     *
+     * @param $csv
+     * @param string $setMemoryLimit
+     * @return array
+     */
     public static function parseShapes($csv, $setMemoryLimit = '768M')
     {
         // This method needs alot of memory.

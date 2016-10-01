@@ -10,6 +10,39 @@ namespace App\Gtfs;
 class Parser
 {
     /**
+     * Returns the string unless it's empty, in which case it returns null.
+     *
+     * @param string $str Input string.
+     * @return string|null
+     */
+    public static function strOrNull($str)
+    {
+        return ($str == '') ? null : $str;
+    }
+
+    /**
+     * Returns the integer (if string it is converted), unless it's empty, in which case it returns null.
+     *
+     * @param $int
+     * @return int|null
+     */
+    public static function intOrNull($int)
+    {
+        return ($int == '') ? null : intval($int);
+    }
+
+    /**
+     * Returns the double (if string it is converted), unless it's empty, in which case it returns null.
+     *
+     * @param $double
+     * @return double|null
+     */
+    public static function doubleOrNull($double)
+    {
+        return ($double == '') ? null : doubleval($double);
+    }
+
+    /**
      * Parse a CSV file into an array.
      *
      * @param $filePath
@@ -37,5 +70,39 @@ class Parser
         }
 
         return $csv;
+    }
+
+    /**
+     * Parse stops.txt
+     *
+     * @param array|string $csv Either pre-parsed CSV file or a path to a CSV file.
+     * @return array Array of stops.
+     */
+    public static function parseStops($csv)
+    {
+        if (is_string($csv)) {
+            $csv = self::parseCsv($csv);
+        }
+
+        $stops = [];
+        foreach ($csv as $row) {
+            $stop = new Stop();
+            $stop->id = intval($row[0]);
+            $stop->stopCode = self::strOrNull($row[1]);
+            $stop->name = self::strOrNull($row[2]);
+            $stop->description = self::strOrNull($row[3]);
+            $stop->lat = self::doubleOrNull($row[4]);
+            $stop->long = self::doubleOrNull($row[5]);
+            $stop->zoneId = self::intOrNull($row[6]);
+            $stop->stopUrl = self::strOrNull($row[7]);
+            $stop->isStation = ($row[8] == 1);
+            $stop->parentStation = self::intOrNull($row[9]);
+            $stop->stopTimezone = $row[10];
+            $stop->wheelchairAccessible = ($row[11] == 0) ? null : boolval($row[11]);
+
+            $stops[$stop->id] = $stop;
+        }
+
+        return $stops;
     }
 }

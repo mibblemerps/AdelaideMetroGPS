@@ -142,18 +142,17 @@ class Parser
      * Parse shapes.txt
      *
      * @param $csv
-     * @param string $setMemoryLimit
-     * @return array
+     * @param callable $chunkCallback Callback called to process the shapes in chunks to prevent exhausting the memory.
+     * @param int $chunkSize Size of chunks passed to $chunkCallback.
+     * @return null
      */
-    public static function parseShapes($csv, $setMemoryLimit = '768M')
+    public static function parseShapes($csv, $chunkCallback, $chunkSize = 32)
     {
-        // This method needs alot of memory.
-        if ($setMemoryLimit !== null) { ini_set('memory_limit', $setMemoryLimit); }
-
         if (is_string($csv)) {
             $csv = self::parseCsv($csv);
         }
 
+        $i = 0;
         $shapePoints = [];
         foreach ($csv as $row) {
             $shapePoint = new Shape();
@@ -164,8 +163,17 @@ class Parser
             $shapePoint->distance = doubleval($row[4]);
 
             $shapePoints[] = $shapePoint;
-        }
 
-        return $shapePoints;
+            $i++;
+            if ($i > $chunkSize) {
+                // Run callback
+                $chunkCallback($shapePoints);
+
+                // Clear old shape points.
+                $shapePoints = [];
+
+                $i = 0;
+            }
+        }
     }
 }

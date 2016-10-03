@@ -88,17 +88,17 @@ class Parser
         foreach ($csv as $row) {
             $stop = new Stop();
             $stop->id = intval($row[0]);
-            $stop->stopCode = self::strOrNull($row[1]);
+            $stop->stop_code = self::strOrNull($row[1]);
             $stop->name = self::strOrNull($row[2]);
             $stop->description = self::strOrNull($row[3]);
             $stop->lat = self::doubleOrNull($row[4]);
             $stop->long = self::doubleOrNull($row[5]);
-            $stop->zoneId = self::intOrNull($row[6]);
-            $stop->stopUrl = self::strOrNull($row[7]);
-            $stop->isStation = ($row[8] == null) ? null : boolval($row[8]);
-            $stop->parentStation = self::intOrNull($row[9]);
-            $stop->stopTimezone = $row[10];
-            $stop->wheelchairAccessible = ($row[11] == null) ? null : boolval($row[11]);
+            $stop->zone_id = self::intOrNull($row[6]);
+            $stop->stop_url = self::strOrNull($row[7]);
+            $stop->is_station = ($row[8] == null) ? null : boolval($row[8]);
+            $stop->parent_station = self::intOrNull($row[9]);
+            $stop->timezone = $row[10];
+            $stop->wheelchair_accessible = ($row[11] == null) ? null : boolval($row[11]);
 
             $stops[$stop->id] = $stop;
         }
@@ -122,15 +122,15 @@ class Parser
         foreach ($csv as $row)
         {
             $trip = new Trip();
-            $trip->routeId = intval($row[0]);
-            $trip->serviceId = intval($row[1]);
+            $trip->route_id = intval($row[0]);
+            $trip->service_id = intval($row[1]);
             $trip->id = intval($row[2]);
             $trip->headsign = self::strOrNull($row[3]);
-            $trip->shortName = self::strOrNull($row[4]);
+            $trip->short_name = self::strOrNull($row[4]);
             $trip->outbound = ($row[5] == null) ? null : boolval($row[5]);
-            $trip->blockId = self::intOrNull($row[6]);
-            $trip->shapeId = self::intOrNull($row[7]);
-            $trip->wheelchairAccessible = ($row[8] == null) ? null : boolval($row[8]);
+            $trip->block_id = self::intOrNull($row[6]);
+            $trip->shape_id = self::intOrNull($row[7]);
+            $trip->wheelchair_accessible = ($row[8] == null) ? null : boolval($row[8]);
 
             $trips[$trip->id] = $trip;
         }
@@ -142,36 +142,38 @@ class Parser
      * Parse shapes.txt
      *
      * @param $csv
-     * @param string $setMemoryLimit
-     * @return array
+     * @param callable $chunkCallback Callback called to process the shapes in chunks to prevent exhausting the memory.
+     * @param int $chunkSize Size of chunks passed to $chunkCallback.
+     * @return null
      */
-    public static function parseShapes($csv, $setMemoryLimit = '768M')
+    public static function parseShapes($csv, $chunkCallback, $chunkSize = 32)
     {
-        // This method needs alot of memory.
-        if ($setMemoryLimit !== null) { ini_set('memory_limit', $setMemoryLimit); }
-
         if (is_string($csv)) {
             $csv = self::parseCsv($csv);
         }
 
-        $shapes = [];
+        $i = 0;
+        $shapePoints = [];
         foreach ($csv as $row) {
-            $shapePoint = new ShapePoint(
-                intval($row[0]),
-                intval($row[3]),
-                doubleval($row[1]),
-                doubleval($row[2]),
-                doubleval($row[4])
-            );
+            $shapePoint = new Shape();
+            $shapePoint->id = intval($row[0]);
+            $shapePoint->sequence = intval($row[3]);
+            $shapePoint->lat = doubleval($row[1]);
+            $shapePoint->long = doubleval($row[2]);
+            $shapePoint->distance = doubleval($row[4]);
 
-            if (!array_has($shapes, $shapePoint->shapeId)) {
-                $newShape = new Shape();
-                $newShape->id = $shapePoint->shapeId;
-                $shapes[$shapePoint->shapeId] = $newShape;
+            $shapePoints[] = $shapePoint;
+
+            $i++;
+            if ($i > $chunkSize) {
+                // Run callback
+                $chunkCallback($shapePoints);
+
+                // Clear old shape points.
+                $shapePoints = [];
+
+                $i = 0;
             }
-            $shapes[$shapePoint->shapeId]->points[] = $shapePoint;
         }
-
-        return $shapes;
     }
 }

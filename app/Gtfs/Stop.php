@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: me
- * Date: 1/10/2016
- * Time: 2:53 PM
- */
 
 namespace App\Gtfs;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * A stop is a location where vehicles stop to pick up or drop off passengers.
@@ -15,67 +10,22 @@ namespace App\Gtfs;
  * Stops may also have zone identifiers, to group them together into zones. This can be used together with
  * FareAttributes and FareRules for zone-based ticketing.
  *
+ * @property int $id Stop ID
+ * @property string $name A human-readable name for the stop.
+ * @property string|null $stop_code Stop code. Usually a short number or text representing the stop. Often used to lookup timetables for the stop. Optional.
+ * @property double $lat Stop latitude.
+ * @property double $long Stop longitude.
+ * @property string|null $description Description of stop. Optional.
+ * @property int $zone_id ID for this zone. Zones are used for fare zones.
+ * @property string $stop_url URL to a webpage about this stop.
+ * @property bool|null $is_station Is this stop a station? Null if unknown.
+ * @property int|null $parent_station ID of the parent station for this stop.
+ * @property string|null $timezone Timezone this stop is located in. This should be a TZ-format timezone, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+ * @property bool|null $wheelchair_accessible Can this stop accommodate a wheelchair? Null if unknown.
+ *
  * @package App\Gtfs
  */
-class Stop
+class Stop extends Model
 {
-    /**
-     * @var int Stop ID
-     */
-    public $id;
-
-    /**
-     * @var string A human-readable name for the stop.
-     */
-    public $name;
-
-    /**
-     * @var string|null Stop code. Usually a short number or text representing the stop. Often used to lookup timetables for the stop. Optional.
-     */
-    public $stopCode = null;
-
-    /**
-     * @var double Stop latitude.
-     */
-    public $lat;
-
-    /**
-     * @var double Stop longitude.
-     */
-    public $long;
-
-    /**
-     * @var string|null Description of stop. Optional.
-     */
-    public $description;
-
-    /**
-     * @var int ID for this zone. Zones are used for fare zones.
-     */
-    public $zoneId;
-
-    /**
-     * @var string URL to a webpage about this stop.
-     */
-    public $stopUrl;
-
-    /**
-     * @var bool|null Is this stop a station? Null if unknown.
-     */
-    public $isStation = null;
-
-    /**
-     * @var int|null ID of the parent station for this stop.
-     */
-    public $parentStation = null;
-
-    /**
-     * @var string|null Timezone this stop is located in. This should be a TZ-format timezone, see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-     */
-    public $stopTimezone = null;
-
-    /**
-     * @var bool|null Can this stop accommodate a wheelchair? Null if unknown.
-     */
-    public $wheelchairAccessible = null;
+    public $timezones = false;
 }

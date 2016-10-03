@@ -1,57 +1,26 @@
 <?php
 
 namespace App\Gtfs;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * GTFS Routes are equivalent to "Lines" in public transportation systems.
  * Routes are made up of one or more Trips — remember that a Trip occurs at a specific time and so a Route is time-independent.
  *
+ * @property int $id Unique route ID.
+ * @property int $agency_id ID of the agency that handles this route.
+ * @property string $short_name The simple human-readable name for this route. Example: "502", or "GAWC". Required.
+ * @property string $full_name This human-readable full name for this route. Example: "Salisbury Interchange to City"
+ * @property int $route_type Route type. All route types defined in the GTFS standard are in the RouteType class.
+ * @property string|null $description Description of this route. Example: "via Bridge Road and O-Bahn. Limited stop service. Operates 7 days." Optional.
+ * @property string|null $route_url URL to the route page. Optional.
+ * @property string $route_colour Route colour in hexadecimal format. Default is white.
+ * @property string $route_text_colour Route colour. Must be readable against the routeColour. Default is black.
+ *
+ *
  * @package App\Gtfs
  */
-class Route
+class Route extends Model 
 {
-    /**
-     * @var int Unique route ID.
-     */
-    public $id;
-
-    /**
-     * @var int ID of the agency that handles this route.
-     */
-    public $agencyId;
-
-    /**
-     * @var string The simple human-readable name for this route. Example: "502", or "GAWC". Required.
-     */
-    public $shortName;
-
-    /**
-     * @var string This human-readable full name for this route. Example: "Salisbury Interchange to City"
-     */
-    public $fullName;
-
-    /**
-     * @var int Route type. All route types defined in the GTFS standard are in the RouteType class.
-     */
-    public $routeType;
-
-    /**
-     * @var string|null Description of this route. Example: "via Bridge Road and O-Bahn. Limited stop service. Operates 7 days." Optional.
-     */
-    public $description = null;
-
-    /**
-     * @var string|null URL to the route page. Optional.
-     */
-    public $routeUrl = null;
-
-    /**
-     * @var string Route colour in hexadecimal format. Default is white.
-     */
-    public $routeColour = 'FFFFFF';
-
-    /**
-     * @var string Route colour. Must be readable against the routeColour.
-     */
-    public $routeTextColour = '000000';
+    public $timestamps = false;
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Gtfs;
+use League\Csv\Reader;
 
 /**
  * GTFS feed parser.
@@ -46,30 +47,12 @@ class Parser
      * Parse a CSV file into an array.
      *
      * @param $filePath
-     * @return array
+     * @return \Iterator
      */
     public static function parseCsv($filePath)
     {
-        $lines = explode("\n", str_replace("\r", '', file_get_contents($filePath))); // Read file
-
-        $csv = [];
-
-        // Parse header
-        $header = explode(",", array_shift($lines));
-        $columnCount = count($header);
-
-        foreach ($lines as $line) {
-            $columns = explode(',', $line);
-
-            if (count($columns) != $columnCount) {
-                // Miss matching column count. Discard this row.
-                continue;
-            }
-
-            $csv[] = $columns;
-        }
-
-        return $csv;
+        $reader = Reader::createFromPath($filePath);
+        return $reader->fetchAll();
     }
 
     /**
@@ -104,6 +87,37 @@ class Parser
         }
 
         return $stops;
+    }
+
+    /**
+     * Parse routes.txt
+     *
+     * @param array|string $csv Either pre-parsed CSV file or a path to a CSV file.
+     * @return array Array of stops.
+     */
+    public static function parseRoutes($csv)
+    {
+        if (is_string($csv)) {
+            $csv = self::parseCsv($csv);
+        }
+
+        $routes = [];
+        foreach ($csv as $row) {
+            $route = new Route();
+            $route->id = strtoupper($row[0]);
+            $route->agency_id = intval($row[1]);
+            $route->short_name = $row[2];
+            $route->full_name = $row[3];
+            $route->description = $row[4];
+            $route->route_type = intval($row[5]);
+            $route->route_url = $row[6];
+            $route->route_colour = $row[7];
+            $route->route_text_colour = $row[8];
+
+            $routes[$route->id] = $route;
+        }
+
+        return $routes;
     }
 
     /**

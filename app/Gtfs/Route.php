@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
  * GTFS Routes are equivalent to "Lines" in public transportation systems.
  * Routes are made up of one or more Trips — remember that a Trip occurs at a specific time and so a Route is time-independent.
  *
- * @property int $id Unique route ID.
+ * @property string $id Unique route ID. Can be string.
  * @property int $agency_id ID of the agency that handles this route.
  * @property string $short_name The simple human-readable name for this route. Example: "502", or "GAWC". Required.
  * @property string $full_name This human-readable full name for this route. Example: "Salisbury Interchange to City"
@@ -23,4 +23,6 @@ use Illuminate\Database\Eloquent\Model;
 class Route extends Model 
 {
     public $timestamps = false;
+
+    public $incrementing = false; // This allows non-numerical indexes.
 }

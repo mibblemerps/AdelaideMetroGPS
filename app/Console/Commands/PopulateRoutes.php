@@ -59,7 +59,7 @@ class PopulateRoutes extends Command
                 $route->save();
                 $i++;
             } catch (QueryException $ex) {
-                $this->error('QueryException when trying to save ' . $route->id . '! ' . $ex->getMessage());
+                $this->error('QueryException when trying to save ' . $route->id . '! This could cause problems.' . "\r\n" . $ex->getMessage());
             }
         }
 

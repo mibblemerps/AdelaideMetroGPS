@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\PopulateRoutes;
 use App\Console\Commands\PopulateShapes;
+use App\Console\Commands\PopulateStops;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         PopulateRoutes::class,
         PopulateShapes::class,
+        PopulateStops::class,
     ];
 
     /**

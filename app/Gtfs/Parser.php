@@ -170,7 +170,7 @@ class Parser
         $shapePoints = [];
         foreach ($csv as $row) {
             $shapePoint = new Shape();
-            $shapePoint->id = intval($row[0]);
+            $shapePoint->shape_id = intval($row[0]);
             $shapePoint->sequence = intval($row[3]);
             $shapePoint->lat = doubleval($row[1]);
             $shapePoint->long = doubleval($row[2]);

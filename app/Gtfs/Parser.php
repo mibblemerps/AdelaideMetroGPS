@@ -136,7 +136,7 @@ class Parser
         foreach ($csv as $row)
         {
             $trip = new Trip();
-            $trip->route_id = intval($row[0]);
+            $trip->route_id = $row[0];
             $trip->service_id = intval($row[1]);
             $trip->id = intval($row[2]);
             $trip->headsign = self::strOrNull($row[3]);

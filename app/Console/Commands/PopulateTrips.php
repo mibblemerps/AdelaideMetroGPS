@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Gtfs\Parser;
-use App\Gtfs\Route;
-use App\Gtfs\Stop;
 use App\Gtfs\Trip;
 use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;

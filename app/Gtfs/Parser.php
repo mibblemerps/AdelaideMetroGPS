@@ -52,7 +52,7 @@ class Parser
     public static function parseCsv($filePath)
     {
         $reader = Reader::createFromPath($filePath);
-        return $reader->fetch();
+        return $reader->setOffset(1)->fetch();
     }
 
     /**

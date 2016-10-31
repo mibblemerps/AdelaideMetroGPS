@@ -49,4 +49,20 @@ class RouteType
      */
     const ROUTE_TYPE_FUNICULAR = 7;
 
+    /**
+     * Maps route types to English, human-readable names.
+     *
+     * @var array
+     */
+    public static $routeTypeNames = [
+        self::ROUTE_TYPE_TRAM => 'Tram',
+        self::ROUTE_TYPE_SUBWAY => 'Subway',
+        self::ROUTE_TYPE_RAIL => 'Rail',
+        self::ROUTE_TYPE_BUS => 'Bus',
+        self::ROUTE_TYPE_FERRY => 'Ferry',
+        self::ROUTE_TYPE_CABLE_CAR => 'Cable Car',
+        self::ROUTE_TYPE_GONDOLA => 'Gondola',
+        self::ROUTE_TYPE_FUNICULAR => 'Funicular',
+    ];
+
 }

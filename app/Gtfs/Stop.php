@@ -27,5 +27,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Stop extends Model
 {
-    public $timezones = false;
+    public $timestamps = false;
 }

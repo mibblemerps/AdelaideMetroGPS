@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Console\Commands\DebugRoutes;
+use App\Console\Commands\DebugStopRealtime;
+use App\Console\Commands\DebugStops;
 use App\Console\Commands\PopulateRoutes;
 use App\Console\Commands\PopulateShapes;
 use App\Console\Commands\PopulateStops;
@@ -21,6 +24,10 @@ class Kernel extends ConsoleKernel
         PopulateShapes::class,
         PopulateStops::class,
         PopulateTrips::class,
+
+        DebugRoutes::class,
+        DebugStops::class,
+        DebugStopRealtime::class,
     ];
 
     /**
